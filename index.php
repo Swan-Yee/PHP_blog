@@ -1,3 +1,8 @@
+<?php 
+session_start();
+require 'config/config.php';
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +23,7 @@
 <body class="hold-transition sidebar-mini">
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="">
+  <div class="content-wrapper" style="margin-left:0 !important">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
@@ -31,74 +36,38 @@
     <!-- Main content -->
     <section class="content">
         <div class="row">
-          <div class="col-md-6">
+          <?php 
+            $stmt=$pdo->prepare("SELECT * FROM posts ORDER BY id DESC");
+            $stmt->execute();
+            $result= $stmt->fetchAll();
+            if($result){
+              $i=1;
+              foreach($result as $value){
+                ?>
+        <div class="col-md-4">
             <!-- Box Comment -->
             <div class="card card-widget">
               <div class="card-header">
-                    <h3 class="text-center">Blog Title</h3>
+                    <h3 class="text-center"><?php echo $value['title']; ?></h3>
               </div>
                 <!-- /.user-block -->
               
               <!-- /.card-header -->
               <div class="card-body">
-                <img class="img-fluid pad" src="dist/img/photo2.png" alt="Photo">
-                <p>I took this photo this morning. What do you guys think?</p>
+                <a href="blogDetail.php?id=<?php echo $value['id']; ?>">
+                  <img class="img-fluid pad" src="admin/images/<?php echo $value['image']; ?>" alt="Photo" width="500" heigth="500">
+                </a>
+                <p><?php echo substr($value['content'],0, 50); ?><a href="blogDetail.php?id=<?php echo $value['id']; ?>">See More....</a></p>
               </div>
               <!-- /.card-footer -->
             </div>
             <!-- /.card -->
           </div>
-          <div class="col-md-6">
-            <!-- Box Comment -->
-            <div class="card card-widget">
-              <div class="card-header">
-                    <h3 class="text-center">Blog Title</h3>
-              </div>
-                <!-- /.user-block -->
-              
-              <!-- /.card-header -->
-              <div class="card-body">
-                <img class="img-fluid pad" src="dist/img/photo2.png" alt="Photo">
-                <p>I took this photo this morning. What do you guys think?</p>
-              </div>
-              <!-- /.card-footer -->
-            </div>
-            <!-- /.card -->
-          </div>
-          <div class="col-md-6">
-            <!-- Box Comment -->
-            <div class="card card-widget">
-              <div class="card-header">
-                    <h3 class="text-center">Blog Title</h3>
-              </div>
-                <!-- /.user-block -->
-              
-              <!-- /.card-header -->
-              <div class="card-body">
-                <img class="img-fluid pad" src="dist/img/photo2.png" alt="Photo">
-                <p>I took this photo this morning. What do you guys think?</p>
-              </div>
-              <!-- /.card-footer -->
-            </div>
-            <!-- /.card -->
-          </div>
-          <div class="col-md-6">
-            <!-- Box Comment -->
-            <div class="card card-widget">
-              <div class="card-header">
-                    <h3 class="text-center">Blog Title</h3>
-              </div>
-                <!-- /.user-block -->
-              
-              <!-- /.card-header -->
-              <div class="card-body">
-                <img class="img-fluid pad" src="dist/img/photo2.png" alt="Photo">
-                <p>I took this photo this morning. What do you guys think?</p>
-              </div>
-              <!-- /.card-footer -->
-            </div>
-            <!-- /.card -->
-          </div>
+              <?php
+            $i++;
+              }
+            }
+        ?>
           <!-- /.col -->
         </div>
     </section>
