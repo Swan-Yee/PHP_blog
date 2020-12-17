@@ -46,7 +46,6 @@ $stmt=$pdo->prepare("SELECT * FROM posts WHERE id=".$_GET['id']);
 $stmt->execute();
 
 $result=$stmt->fetchAll();
-
 ?>
 <?php include 'header.html' ?>
   <!-- Content Wrapper. Contains page content -->

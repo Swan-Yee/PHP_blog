@@ -36,15 +36,29 @@ require 'config/config.php';
     <!-- Main content -->
     <section class="content">
         <div class="row">
-          <?php 
+          <?php
+
+          if(isset($_GET['pageno'])){
+              $pageno= $_GET['pageno'];
+          }
+          else{
+          $pageno=1;
+          }
+
+          $numOfRec=3;
+          $offSet=($pageno -1 )* $numOfRec;
+          
             $stmt=$pdo->prepare("SELECT * FROM posts ORDER BY id DESC");
             $stmt->execute();
             $result= $stmt->fetchAll();
+  
+            $total_page= ceil(count($result)/$numOfRec);
+
             if($result){
               $i=1;
               foreach($result as $value){
-                ?>
-        <div class="col-md-4">
+          ?>
+          <div class="col-md-4">
             <!-- Box Comment -->
             <div class="card card-widget">
               <div class="card-header">
@@ -67,19 +81,37 @@ require 'config/config.php';
             $i++;
               }
             }
-        ?>
+          ?>
           <!-- /.col -->
-        </div>
+      </div>
     </section>
     <!-- /.content -->
-    
-
     <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
       <i class="fas fa-chevron-up"></i>
     </a>
   </div>
   <!-- /.content-wrapper -->
-  
+            <div class="mt-3 mr-3 d-flex justify-content-end">
+            <nav aria-label="Page navigation">
+                  <ul class="pagination">
+                    <li class="page-item">
+                      <a href="?pageno=1" class="page-link">First</a>
+                    </li>
+                    <li class="page-item <?php if($pageno <= 1){echo 'disabled';} ?>">
+                      <a href="<?php if($pageno <=1){echo '#';}else{echo '?pageno='.($pageno-1);} ?>" class="page-link">Previous</a>
+                    </li>
+                    <li class="page-item active">
+                      <a href="" class="page-link"><?php echo $pageno ?></a>
+                    </li>
+                    <li class="page-item <?php if($pageno >= $total_page){echo 'disabled';} ?>">
+                      <a href="<?php if($pageno >= $total_page){echo '#';}else{echo '?pageno='.($pageno+1);} ?>" class="page-link">Next</a>
+                    </li>
+                    <li class="page-item">
+                      <a href="?pageno=<?php echo $total_page?>" class="page-link">Last</a>
+                    </li>
+                  </ul>
+              </nav>
+            </div>
 
   <footer class="main-footer" style="margin-left: 0 !important">
     <div class="float-right d-none d-sm-block">

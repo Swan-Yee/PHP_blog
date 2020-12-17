@@ -2,9 +2,10 @@
 session_start();
 require '../config/config.php';
 
-if (empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])){
+if(empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])){
     header('location: login.php');
 }
+
 ?>
 
 <?php include 'header.html' ?>
@@ -33,7 +34,7 @@ if (empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])){
                         $pageno= $_GET['pageno'];
                     }
                     else{
-                      $pageno=1;
+                     $pageno=1;
                     }
 
                     $numOfRec=5;
@@ -132,5 +133,4 @@ if (empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])){
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-
 <?php include 'footer.html' ?>

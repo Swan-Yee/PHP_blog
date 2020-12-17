@@ -16,12 +16,6 @@ $stmtComment->execute();
 
 $resultComment=$stmtComment->fetchAll();
 
-$auId=$resultComment[0]['author_id'];
-$stmtAu=$pdo->prepare("SELECT * FROM users WHERE id=".$auId);
-$stmtAu->execute();
-
-$resultAu=$stmtAu->fetchAll();
-
 if($_POST){
 
   $comment=$_POST['comment'];
@@ -35,7 +29,6 @@ if($_POST){
   }
 
 }
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -80,12 +73,32 @@ if($_POST){
               <div class="card-footer card-comments">
                 <div class="card-comment">
                   <!-- User image -->
+                  <?php 
+                    if($resultComment){
+                      $auId=$resultComment[0]['author_id'];
+                      $stmtAu=$pdo->prepare("SELECT * FROM users WHERE id=".$auId);
+                      $stmtAu->execute();
+                    
+                      $resultAu=$stmtAu->fetchAll();
+
+                      foreach($resultComment as $resultComment){
+                  ?>
                   <div class="comment-text ml-0">
                     <span class="username">
                       <?php echo $resultAu[0]['name']; ?>
-                      <span class="text-muted float-right"><?php echo $resultComment[0]['created_at']; ?></span>
+                      <span class="text-muted float-right"><?php echo $resultComment['created_at']; ?></span>
                     </span><!-- /.username -->
-                    <?php echo $resultComment[0]['content']; ?>
+                    <?php 
+                    echo $resultComment['content'];
+                    echo "<hr>";
+                    }
+                  }
+                    else{
+                      ?>
+                        <span>Write Down the First Comment!</span>;
+                      <?php
+                    }
+                    ?>
                   </div>
                   <!-- /.comment-text -->
                 </div>
@@ -115,7 +128,7 @@ if($_POST){
   </div>
   <!-- /.content-wrapper -->
 
-  <footer class="main-footer">
+  <footer class="main-footer ml-0">
     <div class="float-right d-none d-sm-block">
       <b>Version</b> 3.0.5
     </div>
