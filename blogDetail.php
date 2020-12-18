@@ -35,7 +35,7 @@ if($_POST){
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Widgets</title>
+  <title>Blog</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -75,21 +75,23 @@ if($_POST){
                   <!-- User image -->
                   <?php 
                     if($resultComment){
-                      $auId=$resultComment[0]['author_id'];
-                      $stmtAu=$pdo->prepare("SELECT * FROM users WHERE id=".$auId);
-                      $stmtAu->execute();
-                    
-                      $resultAu=$stmtAu->fetchAll();
+                      foreach($resultComment as $key => $value){
 
-                      foreach($resultComment as $resultComment){
+                        $auId=$resultComment[$key]['author_id'];
+                        $stmtAu=$pdo->prepare("SELECT * FROM users WHERE id=".$auId);
+                        $stmtAu->execute();
+                      
+                        $resultAu=$stmtAu->fetchAll();
                   ?>
                   <div class="comment-text ml-0">
                     <span class="username">
-                      <?php echo $resultAu[0]['name']; ?>
-                      <span class="text-muted float-right"><?php echo $resultComment['created_at']; ?></span>
+                      <!-- <?php print_r("<pre>");print_r($resultAu);print_r("</pre>"); ?> -->
+                      <?php print_r($resultAu[0]['name']); ?>
+
+                      <span class="text-muted float-right"><?php echo $value['created_at']; ?></span>
                     </span><!-- /.username -->
                     <?php 
-                    echo $resultComment['content'];
+                    echo $value['content'];
                     echo "<hr>";
                     }
                   }
@@ -129,9 +131,6 @@ if($_POST){
   <!-- /.content-wrapper -->
 
   <footer class="main-footer ml-0">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.0.5
-    </div>
     <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
     reserved.
   </footer>

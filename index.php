@@ -1,14 +1,14 @@
 <?php 
 session_start();
 require 'config/config.php';
-
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Widgets</title>
+  <title>Blog</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -30,6 +30,10 @@ require 'config/config.php';
         <div class="row mb-2" style="text-align:center;display:block;">
             <h1>Blog Site</h1>
         </div>
+        <div class="row d-flex justify-content-end">
+          <a href="register.php" class="btn btn-success mx-2">Register</a>
+          <a href="login.php" class="btn btn-primary">Login</a>
+        </div>
       </div><!-- /.container-fluid -->
     </section>
 
@@ -45,18 +49,24 @@ require 'config/config.php';
           $pageno=1;
           }
 
-          $numOfRec=3;
-          $offSet=($pageno -1 )* $numOfRec;
+          $numOfRec=6;
+          $offSet=($pageno-1 )* $numOfRec;
           
             $stmt=$pdo->prepare("SELECT * FROM posts ORDER BY id DESC");
             $stmt->execute();
-            $result= $stmt->fetchAll();
+            $rawResult= $stmt->fetchAll();
   
-            $total_page= ceil(count($result)/$numOfRec);
+            $total_page= ceil(count($rawResult)/$numOfRec);
 
-            if($result){
+            $stmt=$pdo->prepare("SELECT * FROM posts ORDER BY id DESC LIMIT $offSet,$numOfRec");
+            $stmt->execute();
+            $result=$stmt->fetchAll();
+
+            if($result)
+            {
               $i=1;
-              foreach($result as $value){
+              foreach($result as $value)
+              {
           ?>
           <div class="col-md-4">
             <!-- Box Comment -->
@@ -114,10 +124,7 @@ require 'config/config.php';
             </div>
 
   <footer class="main-footer" style="margin-left: 0 !important">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.0.5
-    </div>
-    <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
+    <strong>Copyright &copy; 2020 <a href="#">Swan-Yee-Tun</a>.</strong> All rights
     reserved.
   </footer>
 
